@@ -40,9 +40,9 @@ const LoginPage: React.FC = () => {
       valid = false;
     }
   
-    setErrors(newErrors); // Update state with errors
+    setErrors(newErrors); 
   
-    if (!valid) return; // Stop API call if validation fails
+    if (!valid) return; 
     
     try {
       const response = await apiCall({
