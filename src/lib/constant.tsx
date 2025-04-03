@@ -6,4 +6,5 @@ export const TIMEOUT = 15000;
 
 export const API_ENDPOINTS = {
     AdminLogin:'/admin/login',
+    Profile:'/admin/profile'
 }

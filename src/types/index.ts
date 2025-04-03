@@ -49,3 +49,16 @@ export interface SupportTicket {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface UserData {
+  statusCode: number;
+    name: string;
+    email: string;
+    phone: {
+      code: number;
+      number: number;
+    };
+    gender: string;
+    addresses: any[];
+  
+}

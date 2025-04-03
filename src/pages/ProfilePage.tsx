@@ -1,16 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { User, Mail, Lock, Save } from 'lucide-react';
+import { API_ENDPOINTS } from '../lib/constant';
+import apiCall from '../lib/apiCall';
+import { UserData } from '../types';
 
 const ProfilePage: React.FC = () => {
   const [isEditing, setIsEditing] = useState(false);
-  
+
   // Mock user data
-  const [userData, setUserData] = useState({
-    name: 'Test User',
-    email: 'test@example.com',
-    role: 'Admin',
-    joinDate: new Date('2024-01-01')
-  });
+  const [userData, setUserData] = useState<UserData | null>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -18,6 +16,25 @@ const ProfilePage: React.FC = () => {
     // Handle profile update logic here
   };
 
+  useEffect(() => {
+
+    const profileApi = async () => {
+      try {
+        const response = await apiCall({
+          method: "GET",
+          endpoint: API_ENDPOINTS.Profile,
+        });
+
+        setUserData(response.data)
+        console.log("Akil", response.data.name);
+      } catch (error) {
+        console.error("Login failed:", error);
+        alert(error?.message);
+      }
+    };
+    profileApi()
+
+  }, []);
   return (
     <div>
       <h1 className="text-2xl font-bold text-gray-900 mb-6">Profile Settings</h1>
@@ -47,10 +64,10 @@ const ProfilePage: React.FC = () => {
                     </div>
                     <input
                       type="text"
-                      className="pl-10 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                      value={userData.name}
+                      className="pl-10 min-h-12 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                      value={userData?.name}
                       disabled={!isEditing}
-                      onChange={(e) => setUserData({ ...userData, name: e.target.value })}
+                    // onChange={(e) => setUserData({ ...userData, name?: e.target.value })}
                     />
                   </div>
                 </div>
@@ -65,10 +82,10 @@ const ProfilePage: React.FC = () => {
                     </div>
                     <input
                       type="email"
-                      className="pl-10 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                      value={userData.email}
+                      className="pl-10 min-h-12	block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                      value={userData?.email}
                       disabled={!isEditing}
-                      onChange={(e) => setUserData({ ...userData, email: e.target.value })}
+                    // onChange={(e) => setUserData({ ...userData, email: e.target.value })}
                     />
                   </div>
                 </div>
@@ -84,7 +101,7 @@ const ProfilePage: React.FC = () => {
                       </div>
                       <input
                         type="password"
-                        className="pl-10 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                        className="pl-10 min-h-12 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                         placeholder="Leave blank to keep current password"
                       />
                     </div>
@@ -112,12 +129,12 @@ const ProfilePage: React.FC = () => {
             <h2 className="text-lg font-semibold text-gray-900 mb-4">Account Information</h2>
             <div className="space-y-4">
               <div>
-                <p className="text-sm text-gray-500">Role</p>
-                <p className="font-medium">{userData.role}</p>
+                <p className="text-sm text-gray-500">Mobile Number</p>
+                <p className="font-medium">+{userData?.phone?.code} {userData?.phone?.number}</p>
               </div>
               <div>
-                <p className="text-sm text-gray-500">Member Since</p>
-                <p className="font-medium">{userData.joinDate.toLocaleDateString()}</p>
+                <p className="text-sm text-gray-500">Gender</p>
+                <p className="font-medium capitalize">{userData?.gender}</p>
               </div>
             </div>
           </div>
