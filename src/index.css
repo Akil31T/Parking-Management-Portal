@@ -66,3 +66,21 @@
     @apply bg-background text-foreground;
   }
 }
+
+
+.react-tel-input .form-control {
+  position: relative;
+  font-size: 14px;
+  margin: 30px !important;
+  letter-spacing: .01rem;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  padding-left: 48px;
+  margin-left: 0;
+  background: #FFFFFF;
+  border: 1px solid #CACACA;
+  border-radius: 5px;
+  line-height: 25px;
+  height: 40px;
+  /* width: 370px; */
+}
