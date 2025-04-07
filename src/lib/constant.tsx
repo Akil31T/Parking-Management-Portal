@@ -4,6 +4,11 @@ export const MAX_RETRIES = 3;
 export const TIMEOUT = 15000;
 
 
+export const GOOGLE_API_KEY = 'AIzaSyDhI53FZUxAMvEkSDFZaMu02N6SoRsDA4s'
+
+
 export const API_ENDPOINTS = {
-    AdminLogin:'/admin/login',
+    AdminLogin: '/admin/login',
+    Profile: '/admin/profile',
+    AddAdmin:'/admin'
 }

@@ -11,14 +11,6 @@ const LoginPage: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({ email: "", password: "" });
 
-  // const validateEmail = (email: string) => {
-  //   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  // };
-
-  // const validatePassword = (password: string) => {
-  //   return password.length >= 6; // Minimum 6 characters
-  // };
-
   const LoginApi = async (e: React.FormEvent) => {
     e.preventDefault();
     let valid = true;
