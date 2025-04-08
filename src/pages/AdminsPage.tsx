@@ -34,13 +34,14 @@ const AdminsPage: React.FC = () => {
   const [filters, setFilters] = useState('');
   const [search, setSearch] = useState('');
   // Mock data
-  const handleEdit = (adminId: any) => {
-    setSelectedAdmin(adminId);
+
+
+  const handleEdit = (admin: AdminUser) => {
+    // setSelectedAdmin(admin );
     setIsModalOpen(true);
   };
-  
+
   const handleDelete = (adminId: string) => {
-    // Handle delete logic
     console.log('Delete admin:', adminId);
   };
 
@@ -154,13 +155,13 @@ const AdminsPage: React.FC = () => {
           </select>
         </div>
 
-        {/* <button
+        <button
           onClick={() => setIsModalOpen(true)}
           className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
         >
           <Plus className="h-5 w-5 mr-2" />
           Add Admin
-        </button> */}
+        </button>
       </div>
 
       <div className="bg-white rounded-lg shadow">
@@ -178,11 +179,11 @@ const AdminsPage: React.FC = () => {
               <tr key={admin._id}>
                 <td className="px-6 py-4 whitespace-nowrap">{admin.name}</td>
                 <td className="px-6 py-4 whitespace-nowrap">{admin.email}</td>
-                <td className="px-6 py-4 whitespace-nowrap">{admin.status}</td>
+                <td className="px-6 py-4 whitespace-nowrap">{admin.createdAt}</td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="flex space-x-3">
                     <button
-                      onClick={() => handleEdit(admin._id)}
+                      onClick={() => handleEdit(admin)}
                       className="text-blue-600 hover:text-blue-800"
                     >
                       <Pencil className="h-5 w-5" />
@@ -223,26 +224,115 @@ const AdminsPage: React.FC = () => {
             <label className="block text-sm font-medium text-gray-700">Email</label>
             <input
               type="email"
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-              defaultValue={selectedAdmin?.email}
+              className="mt-1 p-2 block w-full rounded-md border h-[40px] border-gray-500"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
             />
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Role</label>
-            <select
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-              defaultValue={selectedAdmin?.role}
-            >
-              <option value="Admin">Admin</option>
-              <option value="Super Admin">Super Admin</option>
-            </select>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Phone</label>
+              <div className="flex gap-8">
+                <div className="w-16" style={{ height: "40px" }}>
+                  <PhoneInput
+                    country={"ae"}
+                    value={countryCode}
+                    onChange={(countryCode) => setCountryCode(countryCode)}
+                    inputClass="!w-full !py-2 !px-3 h-[20px] !border rounded-r-md border border-gray-300"
+                  />
+                </div>
+                <input
+                  type="tel"
+                  className="flex-1 rounded-md border border-gray-300"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  required
+                />
+              </div>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Gender</label>
+              <select
+                className="mt-1 p-2 block w-full rounded-md border h-[40px] border-gray-500"
+                value={gender}
+                onChange={(e) => setGender(e.target.value)}
+                required
+              >
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
           </div>
-          <div className="flex justify-end space-x-3">
-            <button
-              type="button"
-              onClick={() => setIsModalOpen(false)}
-              className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
-            >
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700">About</label>
+            <textarea
+              className="mt-1 p-2 block w-full rounded-md border border-gray-500"
+              rows={3}
+              value={about}
+              onChange={(e) => setAbout(e.target.value)}
+            />
+          </div>
+
+          <div>
+            <button onClick={() => setIsMapOpen(true)} className="p-2 bg-blue-500 text-white rounded-md">
+              Select Location
+            </button>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700">City</label>
+              <input
+                type="text"
+                className="mt-1 p-2 block w-full rounded-md border h-[40px] border-gray-500"
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Country</label>
+              <input
+                type="text"
+                className="mt-1 p-2 block w-full rounded-md border h-[40px] border-gray-500"
+                value={country}
+                onChange={(e) => setCountry(e.target.value)}
+                required
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Pin Code</label>
+              <input
+                type="text"
+                className="mt-1 p-2 block w-full rounded-md border h-[40px] border-gray-500"
+                value={pinCode}
+                onChange={(e) => setPinCode(e.target.value)}
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Status</label>
+              <select
+                className="mt-1 p-2 block w-full rounded-md border h-[40px] border-gray-500"
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}
+                required
+              >
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="flex justify-end space-x-3 pt-4">
+            <button type="button" onClick={() => setIsModalOpen(false)} className="px-4 py-2 border rounded-md">
               Cancel
             </button>
             <button
@@ -252,7 +342,13 @@ const AdminsPage: React.FC = () => {
               {selectedAdmin ? 'Update' : 'Create'}
             </button>
           </div>
+
+
         </form>
+
+
+
+
       </Modal>
     </div>
   );
