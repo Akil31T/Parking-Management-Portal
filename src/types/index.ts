@@ -49,3 +49,96 @@ export interface SupportTicket {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface UserData {
+  statusCode: number;
+    name: string;
+    email: string;
+    phone: {
+      code: number;
+      number: number;
+    };
+    gender: string;
+    addresses: any[];
+  
+}
+
+export interface Admin {
+  _id: string;
+  name: string;
+  email: string;
+  phone: {
+    number: number;
+    code: number;
+  };
+  password?: string;
+  gender: 'male' | 'female' | 'other';
+  photo?: string;
+  about?: string;
+  user_type: 'admin' | 'super_admin';
+  addresses: Array<{
+    type: 'primary' | 'secondary';
+    city: string;
+    country: string;
+    pinCode: string;
+    location: [number, number];
+  }>;
+  status: 'active' | 'inactive';
+}
+
+export const countryCodes = [
+  { code: 1, name: 'USA' },
+  { code: 44, name: 'UK' },
+  { code: 91, name: 'India' },
+  { code: 86, name: 'China' },
+  { code: 81, name: 'Japan' },
+  // Add more as needed
+];
+
+export interface User {
+  _id:string;
+  name: string;
+  email: string;
+  phone: {
+    number: number;
+    code: number;
+  };
+  password: string;
+  gender: "male" | "female" | "other";
+  photo: string;
+  about: string;
+  user_type: "admin" | "user" | "moderator"; // Adjust as needed
+  addresses: Address[];
+  status: "active" | "inactive";
+}
+
+interface Address {
+  type: "primary" | "secondary";
+  city: string;
+  country: string;
+  pinCode: string;
+  location: [number, number]; // Latitude and Longitude
+}
+
+export interface AdminUser {
+  _id: string;
+  name: string;
+  email: string;
+  phone: {
+    number: number;
+    code: number;
+  };
+  photo: string;
+  status: 'active' | 'inactive'; // if only these two are valid
+  createdAt: string; // or `Date` if you convert it
+  updatedAt: string;
+}
+
+export interface ApiCallOptions {
+  method: string;
+  endpoint: string;
+  body?: any;
+  headers?: Record<string, string>;
+  // 👇 Add this line
+  params?: Record<string, any>;
+}
