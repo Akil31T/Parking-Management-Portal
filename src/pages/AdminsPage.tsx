@@ -216,7 +216,7 @@ const AdminsPage: React.FC = () => {
             <label className="block text-sm font-medium text-gray-700">Name</label>
             <input
               type="text"
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              className="mt-1 p-2 block w-full rounded-md border h-[40px] border-gray-500"
               defaultValue={selectedAdmin?.name}
             />
           </div>
@@ -240,8 +240,7 @@ const AdminsPage: React.FC = () => {
                     country={"ae"}
                     value={countryCode}
                     onChange={(countryCode) => setCountryCode(countryCode)}
-                    inputClass="!w-full !py-2 !px-3 h-[20px] !border rounded-r-md border border-gray-300"
-                  />
+                    inputClass="form-control !w-full !py-2 !px-3 h-[20px] !border rounded-r-md border border-gray-300"                  />
                 </div>
                 <input
                   type="tel"
