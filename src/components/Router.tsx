@@ -26,6 +26,7 @@ export default function PageRouter() {
               <Route path="/parking-areas" element={<ParkingAreasPage />} />
               <Route path="/drivers" element={<DriversPage />} />
               <Route path="/bookings" element={<BookingsPage />} />
+              {/* <Route path="/owner" element={<OwnersPage />} /> */}
               <Route path="/bookings/:id" element={<BookingDetailPage />} />
               <Route path="/transactions" element={<TransactionsPage />} />
               <Route path="/support-tickets" element={<SupportTicketsPage />} />
@@ -35,7 +36,7 @@ export default function PageRouter() {
               />
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="*" element={<Navigate to="/dashboard" replace />} />
-            </Routes>
+              </Routes>
           </main>
         </div>
       </div>
