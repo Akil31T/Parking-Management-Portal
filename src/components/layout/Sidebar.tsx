@@ -7,7 +7,8 @@ import {
   Calendar,
   CreditCard,
   TicketIcon,
-  Settings
+  Settings,
+  Crown
 } from 'lucide-react';
 
 const Sidebar: React.FC = () => {
@@ -18,7 +19,7 @@ const Sidebar: React.FC = () => {
     { path: '/admins', icon: Users, label: 'Admins' },
     { path: '/parking-areas', icon: Car, label: 'Parking Areas' },
     { path: '/drivers', icon: Users, label: 'Customer' },
-    // { path: '/owner', icon: Users, label: 'Owner' },
+    { path: '/owner', icon: Crown, label: 'Owner' },
     { path: '/bookings', icon: Calendar, label: 'Bookings' },
     { path: '/transactions', icon: CreditCard, label: 'Transactions' },
     { path: '/support-tickets', icon: TicketIcon, label: 'Support Tickets' },
