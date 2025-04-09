@@ -13,6 +13,8 @@ import TicketDetailPage from "./pages/TicketDetailPage";
 import ProfilePage from "./pages/ProfilePage";
 import ProtectedLayout from "./components/layout/ProtectedLayout";
 import SettingsPage from "./pages/Setting";
+import OwnerPage from "./pages/OwnerPage";
+import OwnerDetailPage from "./pages/OwnersDetailsPage";
 
 export function AppRoutes() {
   return (
@@ -27,6 +29,9 @@ export function AppRoutes() {
         <Route path="/admins" element={<AdminsPage />} />
         <Route path="/parking-areas" element={<ParkingAreasPage />} />
         <Route path="/drivers" element={<DriversPage />} />
+        <Route path="/owner" element={<OwnerPage />} />
+        <Route path="/owner/:ownerId" element={<OwnerDetailPage />} />
+
         <Route path="/bookings" element={<BookingsPage />} />
         <Route path="/bookings/:id" element={<BookingDetailPage />} />
         <Route path="/transactions" element={<TransactionsPage />} />
