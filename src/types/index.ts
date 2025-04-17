@@ -6,6 +6,10 @@ export interface Admin {
 }
 
 export interface ParkingArea {
+  features: any[];
+  vehicle_types_allowed: string | number | readonly string[];
+  photos: any;
+  address: any;
   id: string;
   name: string;
   location: string;

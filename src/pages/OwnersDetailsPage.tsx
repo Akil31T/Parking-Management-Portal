@@ -9,25 +9,6 @@ const OwnerAreasPage: React.FC = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedArea, setSelectedArea] = useState<ParkingArea | null>(null);
 
-    // Mock data
-    const parkingAreas: ParkingArea[] = [
-        {
-            id: '1',
-            name: 'Downtown Parking',
-            location: '123 Main St',
-            totalSpots: 100,
-            availableSpots: 45,
-            pricePerHour: 5
-        },
-        {
-            id: '2',
-            name: 'Airport Parking',
-            location: '456 Airport Rd',
-            totalSpots: 200,
-            availableSpots: 120,
-            pricePerHour: 8
-        }
-    ];
 
     const handleEdit = (area: ParkingArea) => {
         setSelectedArea(area);
@@ -78,7 +59,7 @@ const OwnerAreasPage: React.FC = () => {
     return (
         <div>
             <div className="flex justify-between items-center mb-6">
-                <h1 className="text-2xl font-bold text-gray-900">owner Areas</h1>
+                <h1 className="text-2xl font-bold text-gray-900">Owner Areas</h1>
                 {/* <button
                     onClick={() => setIsModalOpen(true)}
                     className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"

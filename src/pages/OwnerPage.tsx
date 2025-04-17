@@ -3,56 +3,9 @@ import { Link } from 'react-router-dom';
 import { Clock, CheckCircle, XCircle } from 'lucide-react';
 import type { Booking } from '../types';
 import apiCall from '../lib/apiCall';
-import { API_ENDPOINTS } from '../lib/constant';
+import { API_ENDPOINTS, getStatusClass, getStatusIcon } from '../lib/constant';
 
 const OwnerPage: React.FC = () => {
-    // Mock data
-    const bookings: Booking[] = [
-        {
-            id: '1',
-            parkingAreaId: '1',
-            driverId: '1',
-            startTime: new Date('2024-03-15T10:00:00'),
-            endTime: new Date('2024-03-15T15:00:00'),
-            status: 'active',
-            totalAmount: 25
-        },
-        {
-            id: '2',
-            parkingAreaId: '2',
-            driverId: '2',
-            startTime: new Date('2024-03-16T09:00:00'),
-            endTime: new Date('2024-03-16T12:00:00'),
-            status: 'pending',
-            totalAmount: 24
-        }
-    ];
-
-    const getStatusIcon = (status: Booking['status']) => {
-        switch (status) {
-            case 'active':
-                return <Clock className="h-5 w-5 text-blue-500" />;
-            case 'completed':
-                return <CheckCircle className="h-5 w-5 text-green-500" />;
-            case 'cancelled':
-                return <XCircle className="h-5 w-5 text-red-500" />;
-            default:
-                return <Clock className="h-5 w-5 text-yellow-500" />;
-        }
-    };
-
-    const getStatusClass = (status: Booking['status']) => {
-        switch (status) {
-            case 'active':
-                return 'bg-blue-100 text-blue-800';
-            case 'completed':
-                return 'bg-green-100 text-green-800';
-            case 'cancelled':
-                return 'bg-red-100 text-red-800';
-            default:
-                return 'bg-yellow-100 text-yellow-800';
-        }
-    };
 
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(10);
@@ -91,7 +44,7 @@ const OwnerPage: React.FC = () => {
 
     return (
         <div>
-            <h1 className="text-2xl font-bold text-gray-900 mb-6">Bookings</h1>
+            <h1 className="text-2xl font-bold text-gray-900 mb-6">Owners</h1>
 
             <div className="bg-white rounded-lg shadow overflow-hidden">
                 <div className="min-w-full">
@@ -110,9 +63,6 @@ const OwnerPage: React.FC = () => {
                                 <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Status
                                 </th>
-                                {/* <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Amount
-                                </th> */}
                                 <th className="px-6 py-3 bg-gray-50"></th>
                             </tr>
                         </thead>

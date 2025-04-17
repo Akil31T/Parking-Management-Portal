@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Plus, Pencil, Trash2 } from 'lucide-react';
 import Modal from '../components/common/Modal';
 import type { Driver } from '../types';
+import apiCall from '../lib/apiCall';
+import { API_ENDPOINTS, getStatusClass, getStatusIcon } from '../lib/constant';
 
 const DriversPage: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -35,17 +37,69 @@ const DriversPage: React.FC = () => {
     console.log('Delete driver:', driverId);
   };
 
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+  const [sort, setSort] = useState('createdAt');
+  const [order, setOrder] = useState('asc'); // or 'desc'
+  const [filters, setFilters] = useState('');
+  const [search, setSearch] = useState('');
+  const [Customer, setCustomer] = useState([]);
+
+  // Mock data
+
+  useEffect(() => {
+    const getCustomer = async () => {
+      try {
+        const queryParams = new URLSearchParams({
+          page: page.toString(),
+          limit: limit.toString(),
+          sort: `${sort}:${order}`,
+          filters,
+          textSearch: search,
+        }).toString();
+
+        const response = await apiCall({
+          method: "GET",
+          endpoint: `${API_ENDPOINTS.Customer}?${queryParams}`,
+        });
+
+        setCustomer(response.data.data)
+      } catch (error) {
+        console.error("Login failed:", error);
+        alert(error?.message || "Login failed. Please try again.");
+      }
+    };
+    getCustomer()
+  }, [page, limit, sort, order, filters, search]);
+
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold text-gray-900">Drivers</h1>
-        <button
+        <div className='gap-3'>
+          <input
+            type="text"
+            placeholder="Search..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="border px-3 py-1 rounded mb-4"
+          />
+          <select
+            onChange={(e) => setFilters(e.target.value)}
+            className="border px-2 py-1 rounded ml-4"
+          >
+            <option value="">All</option>
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+          </select>
+        </div>
+        {/* <button
           onClick={() => setIsModalOpen(true)}
           className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
         >
           <Plus className="h-5 w-5 mr-2" />
           Add Driver
-        </button>
+        </button> */}
       </div>
 
       <div className="bg-white rounded-lg shadow">
@@ -55,19 +109,26 @@ const DriversPage: React.FC = () => {
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Phone</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Vehicle Number</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+              {/* <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th> */}
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
-            {drivers.map((driver) => (
-              <tr key={driver.id}>
+            {Customer.map((driver) => (
+              <tr key={driver._id}>
                 <td className="px-6 py-4 whitespace-nowrap">{driver.name}</td>
                 <td className="px-6 py-4 whitespace-nowrap">{driver.email}</td>
-                <td className="px-6 py-4 whitespace-nowrap">{driver.phone}</td>
-                <td className="px-6 py-4 whitespace-nowrap">{driver.vehicleNumber}</td>
+                <td className="px-6 py-4 whitespace-nowrap">{driver.phone.number}</td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="flex space-x-3">
+                  <div className="flex items-center">
+                    {getStatusIcon(driver.status)}
+                    <span className={`ml-2 px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusClass(driver.status)}`}>
+                      {driver.status.charAt(0).toUpperCase() + driver.status.slice(1)}
+                    </span>
+                  </div>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  {/* <div className="flex space-x-3">
                     <button
                       onClick={() => handleEdit(driver)}
                       className="text-blue-600 hover:text-blue-800"
@@ -80,7 +141,7 @@ const DriversPage: React.FC = () => {
                     >
                       <Trash2 className="h-5 w-5" />
                     </button>
-                  </div>
+                  </div> */}
                 </td>
               </tr>
             ))}

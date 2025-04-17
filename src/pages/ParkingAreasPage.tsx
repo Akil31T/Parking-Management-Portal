@@ -1,34 +1,22 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Plus, Pencil, Trash2 } from 'lucide-react';
 import Modal from '../components/common/Modal';
 import type { ParkingArea } from '../types';
+import apiCall from '../lib/apiCall';
+import { API_ENDPOINTS } from '../lib/constant';
 
 const ParkingAreasPage: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedArea, setSelectedArea] = useState<ParkingArea | null>(null);
 
-  // Mock data
-  const parkingAreas: ParkingArea[] = [
-    {
-      id: '1',
-      name: 'Downtown Parking',
-      location: '123 Main St',
-      totalSpots: 100,
-      availableSpots: 45,
-      pricePerHour: 5
-    },
-    {
-      id: '2',
-      name: 'Airport Parking',
-      location: '456 Airport Rd',
-      totalSpots: 200,
-      availableSpots: 120,
-      pricePerHour: 8
-    }
-  ];
+  const handleEdit = async (area) => {
+    const response = await apiCall({
+      method: "GET",
+      endpoint: `${API_ENDPOINTS.EditProperties}${area}`,
+    });
+    setSelectedArea(response.data);
+    console.log(response, 'akil');
 
-  const handleEdit = (area: ParkingArea) => {
-    setSelectedArea(area);
     setIsModalOpen(true);
   };
 
@@ -37,6 +25,48 @@ const ParkingAreasPage: React.FC = () => {
     console.log('Delete area:', areaId);
   };
 
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+  const [sort, setSort] = useState('createdAt');
+  const [order, setOrder] = useState('asc'); // or 'desc'
+  const [filters, setFilters] = useState('');
+  const [search, setSearch] = useState('');
+  const [Properties, setProperties] = useState([]);
+
+  // Mock data
+
+  useEffect(() => {
+    const getProperties = async () => {
+      try {
+        const queryParams = new URLSearchParams({
+          page: page.toString(),
+          limit: limit.toString(),
+          sort: `${sort}:${order}`,
+          filters,
+          textSearch: search,
+        }).toString();
+
+        const response = await apiCall({
+          method: "GET",
+          endpoint: `${API_ENDPOINTS.Properties}?${queryParams}`,
+        });
+
+        setProperties(response.data.data)
+      } catch (error) {
+        console.error("Login failed:", error);
+        alert(error?.message || "Login failed. Please try again.");
+      }
+    };
+    getProperties()
+  }, [page, limit, sort, order, filters, search]);
+
+  const [selectedVehicle, setSelectedVehicle] = useState<string>('');
+
+  const vehicleTypes = selectedArea;
+  console.log(vehicleTypes, 'vehicleTypes');
+
+  // Guard to make sure it's an array
+  const isArray = Array.isArray(vehicleTypes);
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
@@ -51,16 +81,16 @@ const ParkingAreasPage: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {parkingAreas.map((area) => (
-          <div key={area.id} className="bg-white rounded-lg shadow p-6">
+        {Properties.map((area) => (
+          <div key={area._id} className="bg-white rounded-lg shadow p-6">
             <div className="flex justify-between items-start mb-4">
               <div>
                 <h3 className="text-lg font-semibold text-gray-900">{area.name}</h3>
-                <p className="text-gray-500">{area.location}</p>
+                <p className="text-gray-500">{area.type}</p>
               </div>
               <div className="flex space-x-2">
                 <button
-                  onClick={() => handleEdit(area)}
+                  onClick={() => handleEdit(area._id)}
                   className="text-blue-600 hover:text-blue-800"
                 >
                   <Pencil className="h-5 w-5" />
@@ -75,18 +105,12 @@ const ParkingAreasPage: React.FC = () => {
             </div>
 
             <div className="space-y-2">
-              <div className="flex justify-between">
-                <span className="text-gray-500">Total Spots</span>
-                <span className="font-medium">{area.totalSpots}</span>
+              <div>
+                <h3 className="text-lg font-semibold text-gray-500">{area.name}</h3>
+                <span className="font-medium">{area.address.street},{area.address.city},{area.address.state},{area.address.country} - {area.address.pinCode}</span>
+
               </div>
-              <div className="flex justify-between">
-                <span className="text-gray-500">Available Spots</span>
-                <span className="font-medium">{area.availableSpots}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-500">Price per Hour</span>
-                <span className="font-medium">${area.pricePerHour}</span>
-              </div>
+
             </div>
           </div>
         ))}
@@ -105,7 +129,7 @@ const ParkingAreasPage: React.FC = () => {
             <label className="block text-sm font-medium text-gray-700">Name</label>
             <input
               type="text"
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              className="mt-1 block p-2 w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
               defaultValue={selectedArea?.name}
             />
           </div>
@@ -113,27 +137,54 @@ const ParkingAreasPage: React.FC = () => {
             <label className="block text-sm font-medium text-gray-700">Location</label>
             <input
               type="text"
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-              defaultValue={selectedArea?.location}
+              className="mt-1 block p-2 w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              defaultValue={`${selectedArea?.address.street},${selectedArea?.address.city},${selectedArea?.address.state},${selectedArea?.address.country} - ${selectedArea?.address.pinCode}`}
             />
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700">Total Spots</label>
-              <input
-                type="number"
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                defaultValue={selectedArea?.totalSpots}
-              />
+              <label className="block text-sm font-medium text-gray-700">Vehicle Types Allowed</label>
+              <select
+                className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                defaultValue={(selectedArea?.vehicle_types_allowed?.[0]?._id) || ''}
+              >
+                {(selectedArea?.vehicle_types_allowed as any[])?.map((vehicle) => (
+                  <option key={vehicle._id} value={vehicle._id}>
+                    {vehicle.name}
+                  </option>
+                ))}
+              </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700">Price per Hour</label>
-              <input
+              <label className="inline-block text-sm font-medium text-gray-700">Features</label>
+              <div className='p-2'>
+              {(selectedArea?.features as any[])?.map((Features) => (
+                  <option key={Features._id} value={Features._id}>
+                    {Features.name}
+                  </option>
+                ))}
+              </div>
+              {/* <input
                 type="number"
                 step="0.01"
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 defaultValue={selectedArea?.pricePerHour}
-              />
+              /> */}
+            </div>
+            <div className='grid grid-row-2 gap-4'>
+              {selectedArea && selectedArea.photos ? (
+                selectedArea.photos.map((photo, index) => (
+                  <img
+                    key={index}
+                    src={photo}
+                    alt={`Photo ${index + 1}`}
+                    style={{ width: '300px', height: '200px', objectFit: 'cover', margin: '10px' }}
+                  />
+
+                ))
+              ) : (
+                <p>Loading photos...</p>
+              )}
             </div>
           </div>
           <div className="flex justify-end space-x-3">
