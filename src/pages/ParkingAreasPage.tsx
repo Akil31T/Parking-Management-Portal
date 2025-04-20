@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Plus, Pencil, Trash2 } from 'lucide-react';
 import Modal from '../components/common/Modal';
-import type { ParkingArea } from '../types';
+import type { ImageUrl, ParkingArea } from '../types';
 import apiCall from '../lib/apiCall';
 import { API_ENDPOINTS } from '../lib/constant';
 
@@ -15,13 +15,10 @@ const ParkingAreasPage: React.FC = () => {
       endpoint: `${API_ENDPOINTS.EditProperties}${area}`,
     });
     setSelectedArea(response.data);
-    console.log(response, 'akil');
-
     setIsModalOpen(true);
   };
 
   const handleDelete = (areaId: string) => {
-    // Handle delete logic
     console.log('Delete area:', areaId);
   };
 
@@ -32,8 +29,10 @@ const ParkingAreasPage: React.FC = () => {
   const [filters, setFilters] = useState('');
   const [search, setSearch] = useState('');
   const [Properties, setProperties] = useState([]);
+  const [selectedVehicle, setSelectedVehicle] = useState<ImageUrl>();
 
   // Mock data
+console.log(selectedArea.type, 'selectedArea');
 
   useEffect(() => {
     const getProperties = async () => {
@@ -57,16 +56,23 @@ const ParkingAreasPage: React.FC = () => {
         alert(error?.message || "Login failed. Please try again.");
       }
     };
+    const getImageUrl = async () => {
+      try {
+        const response = await apiCall({
+          method: "GET",
+          endpoint: `${API_ENDPOINTS.Photo}?key=${selectedArea.type || ''}`,
+        });
+        setSelectedVehicle(response.data)
+      } catch (error) {
+        console.error("Login failed:", error);
+        alert(error?.message || "Login failed. Please try again.");
+      }
+    };
     getProperties()
+    getImageUrl()
   }, [page, limit, sort, order, filters, search]);
 
-  const [selectedVehicle, setSelectedVehicle] = useState<string>('');
 
-  const vehicleTypes = selectedArea;
-  console.log(vehicleTypes, 'vehicleTypes');
-
-  // Guard to make sure it's an array
-  const isArray = Array.isArray(vehicleTypes);
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
@@ -158,7 +164,7 @@ const ParkingAreasPage: React.FC = () => {
             <div>
               <label className="inline-block text-sm font-medium text-gray-700">Features</label>
               <div className='p-2'>
-              {(selectedArea?.features as any[])?.map((Features) => (
+                {(selectedArea?.features as any[])?.map((Features) => (
                   <option key={Features._id} value={Features._id}>
                     {Features.name}
                   </option>
@@ -172,18 +178,17 @@ const ParkingAreasPage: React.FC = () => {
               /> */}
             </div>
             <div className='grid grid-row-2 gap-4'>
-              {selectedArea && selectedArea.photos ? (
-                selectedArea.photos.map((photo, index) => (
-                  <img
-                    key={index}
-                    src={photo}
-                    alt={`Photo ${index + 1}`}
-                    style={{ width: '300px', height: '200px', objectFit: 'cover', margin: '10px' }}
-                  />
-
-                ))
-              ) : (
-                <p>Loading photos...</p>
+              {selectedVehicle && selectedVehicle.signedUrl && (
+                <img
+                  src={selectedVehicle.signedUrl}
+                  alt="Photo"
+                  style={{
+                    width: '300px',
+                    height: '200px',
+                    objectFit: 'cover',
+                    margin: '10px',
+                  }}
+                />
               )}
             </div>
           </div>

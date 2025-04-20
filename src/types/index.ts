@@ -10,6 +10,7 @@ export interface ParkingArea {
   vehicle_types_allowed: string | number | readonly string[];
   photos: any;
   address: any;
+  type:string;
   id: string;
   name: string;
   location: string;
@@ -18,6 +19,9 @@ export interface ParkingArea {
   pricePerHour: number;
 }
 
+export interface ImageUrl{
+  signedUrl:string
+}
 export interface Driver {
   id: string;
   name: string;
@@ -98,6 +102,17 @@ export const countryCodes = [
   { code: 81, name: 'Japan' },
   // Add more as needed
 ];
+
+// export interface Feature {
+//   _id: string;
+//   name: string;
+//   description: string;
+//   status: 'active' | 'inactive'; // use union type if status is limited to these values
+//   createdBy: string;
+//   createdAt: string; // or `Date` if you're parsing to Date objects
+//   updatedAt: string;
+//   __v: number;
+// }
 
 export interface User {
   _id:string;

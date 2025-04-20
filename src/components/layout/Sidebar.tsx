@@ -8,7 +8,9 @@ import {
   CreditCard,
   TicketIcon,
   Settings,
-  Crown
+  Crown,
+  FolderClock,
+  UserPlus
 } from 'lucide-react';
 
 const Sidebar: React.FC = () => {
@@ -17,9 +19,11 @@ const Sidebar: React.FC = () => {
   const menuItems = [
     { path: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
     { path: '/admins', icon: Users, label: 'Admins' },
-    { path: '/parking-areas', icon: Car, label: 'Parking Areas' },
+    { path: '/parking-areas', icon: UserPlus, label: 'Propertys' },
     { path: '/drivers', icon: Users, label: 'Customer' },
     { path: '/owner', icon: Crown, label: 'Owner' },
+    { path: '/features', icon: FolderClock, label: 'Features' },
+    { path: '/vehicle', icon: Car, label: 'Vehicle Type' },
     { path: '/bookings', icon: Calendar, label: 'Bookings' },
     { path: '/transactions', icon: CreditCard, label: 'Transactions' },
     { path: '/support-tickets', icon: TicketIcon, label: 'Support Tickets' },
