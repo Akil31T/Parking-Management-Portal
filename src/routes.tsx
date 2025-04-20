@@ -15,6 +15,9 @@ import ProtectedLayout from "./components/layout/ProtectedLayout";
 import SettingsPage from "./pages/Setting";
 import OwnerPage from "./pages/OwnerPage";
 import OwnerDetailPage from "./pages/OwnersDetailsPage";
+import FeaturesManagement from "./pages/FeaturesManagement";
+import FeaturesDetails from "./pages/FeaturesDetails";
+import VehicleManagement from "./pages/VehicleType";
 
 export function AppRoutes() {
   return (
@@ -31,6 +34,9 @@ export function AppRoutes() {
         <Route path="/drivers" element={<DriversPage />} />
         <Route path="/owner" element={<OwnerPage />} />
         <Route path="/owner/:ownerId" element={<OwnerDetailPage />} />
+        <Route path="/features" element={<FeaturesManagement />} />
+        <Route path="/features/:featuresId" element={<FeaturesDetails />} />
+        <Route path="/vehicle" element={<VehicleManagement />} />
 
         <Route path="/bookings" element={<BookingsPage />} />
         <Route path="/bookings/:id" element={<BookingDetailPage />} />

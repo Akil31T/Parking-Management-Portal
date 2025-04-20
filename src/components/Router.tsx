@@ -12,6 +12,8 @@ import SupportTicketsPage from "../pages/SupportTicketsPage";
 import TicketDetailPage from "../pages/TicketDetailPage";
 import TransactionsPage from "../pages/TransactionsPage";
 import OwnerPage from "../pages/OwnerPage";
+import FeaturesManagement from "../pages/FeaturesManagement";
+import VehicleManagement from "../pages/VehicleType";
 
 export default function PageRouter() {
   return (
@@ -27,7 +29,10 @@ export default function PageRouter() {
               <Route path="/parking-areas" element={<ParkingAreasPage />} />
               <Route path="/drivers" element={<DriversPage />} />
               <Route path="/bookings" element={<BookingsPage />} />
+              <Route path="/features" element={<FeaturesManagement />} />
               <Route path="/owner" element={<OwnerPage/>} />
+              <Route path="/vehicle" element={<VehicleManagement/>} />
+
               <Route path="/bookings/:id" element={<BookingDetailPage />} />
               <Route path="/transactions" element={<TransactionsPage />} />
               <Route path="/support-tickets" element={<SupportTicketsPage />} />

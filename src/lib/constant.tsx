@@ -15,10 +15,13 @@ export const API_ENDPOINTS = {
     Profile: '/admin/profile',
     AddAdmin:'/admin',
     Owner:'/admin/property/owner',
+    Features:'/features',
     ownerDetail:'/admin/properties/owner',
     Customer:'/admin/customer',
     Properties:"/admin/properties",
-    EditProperties:'/admin/properties/'
+    EditProperties:'/admin/properties/',
+    Vehicle:'/vehicle-type',
+    Photo:'/upload/signed-url'
 }
 
 export const getStatusIcon = (status: Booking['status']) => {
